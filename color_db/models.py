@@ -39,17 +39,3 @@ class NameThatColor(models.Model):
     name = models.CharField(max_length=24)
     rgb  = models.ForeignKey(RGBColor)
 
-
-class Palette(models.Model):
-    DATA_SETS = (
-        (0, 'user_uploaded'),
-        (1, 'flickr_pool_colorandcolors'),
-        (2, 'flickr_interesting'),
-    )
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    source  = models.CharField(max_length=64)
-    dataset = models.CharField(choices=DATA_SETS, max_length=64)
-    depth   = models.IntegerField()
-    colors  = models.ManyToManyField(RGBColor)
-
