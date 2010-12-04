@@ -6,7 +6,7 @@ class Command(BaseCommand):
     help = 'Populate the color database'
 
     def handle(self, *args, **options):
-        for index in range(0,16777215):
+        for index in range(0,16777216):
             color = RGBColor()
             color.store_rgbint(index)
 
