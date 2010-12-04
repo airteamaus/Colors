@@ -28,3 +28,4 @@ if __name__ == "__main__":
     if not args.image:
         raise AttributeError('usage quant --image imgfile [--depth n]')
     eigth_cols = quant(args.image)
+
