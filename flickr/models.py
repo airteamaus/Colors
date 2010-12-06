@@ -1,6 +1,6 @@
 from django.db import models
 import django_utils
-# Create your models here.
+
 class  Photo(models.Model):
     """
     A Flickr photo
