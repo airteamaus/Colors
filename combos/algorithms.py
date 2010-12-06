@@ -1,24 +1,43 @@
-import argparse
+import argparse, struct
+
+import scipy
+import scipy.misc
+import scipy.cluster
+
 from PIL import Image
 
 def get_cols(image):
     cols = image.getcolors()
     return cols
 
-def quant256(img, depth=256, retvals=8):
+def quant256(img, depth=256, retvals=6):
     """
     Returns a list of colors wuth length retvals
     Defaults to max color depth which is 256.
     """
     image = Image.open(img)
-    image = image.convert('P', palette=Image.ADAPTIVE, colors=depth)
-    colours = image.getcolors()
+    image.convert("P", palette=Image.ADAPTIVE)
+    image.convert("RGB")
+    colours = image.getcolors(depth)
     colours = sorted(colours)
     result=[]
     for count, value in colours[depth-retvals:]:
-        rgb_int = value * 65536
         result.append(rgb_int)
     return result
+
+
+def kmeans(img, retvals=16):
+    NUM_CLUSTERS = retvals
+    ar=scipy.misc.fromimage(img)
+
+    codes, dist = scipy.cluster.vq.kmeans(ar, NUM_CLUSTERS)
+
+    vecs, dist = scipy.cluster.vq.vq(ar, codes)
+    counts, bins = scipy.histogram(vecs, len(codes))
+
+    index_max = scipy.argmax(counts)
+    peak = codes[index_max]
+    color = ''.join(chr(c) for c in peak).encode('hex')
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
