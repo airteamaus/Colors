@@ -3,6 +3,7 @@ import json
 from django.core.management.base import BaseCommand, CommandError
 from django.conf import settings
 from Flickr.API import API
+from BeautifulSoup import BeautifulSoup
 
 from flickr.models import Photo
 
@@ -20,20 +21,21 @@ class Command(BaseCommand):
                 sign=False)
         photo_list = json.load(json_result).get('photos')
         for photo in photo_list.get('photo'):
-            try:
-                record, created = Photo.objects.get_or_create(
-                    id = photo.get('id'),
-                    title = photo.get('title'),
-                    description = photo.get('description'),
-                    owner = photo.get('owner'),
-                    secret = photo.get('secret'),
-                    farm = photo.get('farm'),
-                    server = photo.get('server'),
-                    url_m = photo.get('url_m'),
-                    latitude = photo.get('latitude'),
-                    longitude = photo.get('longitude'),
-                )
-            except:
-                pass
-        print Photo.objects.all().count()
+
+            desc = photo.get('description').get('_content')
+            desc = ''.join(BeautifulSoup(desc).findAll(text=True))
+            record, created = Photo.objects.get_or_create(
+                id = photo.get('id'),
+                title = photo.get('title'),
+                description = desc,
+                owner = photo.get('owner'),
+                secret = photo.get('secret'),
+                farm = photo.get('farm'),
+                server = photo.get('server'),
+                url_m = photo.get('url_m'),
+                latitude = photo.get('latitude'),
+                longitude = photo.get('longitude'),
+            )
+            print record.description
+        print len(photo_list)
 

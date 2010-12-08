@@ -1,7 +1,7 @@
 from django.db import models
 import django_utils
 
-class  Photo(models.Model):
+class Photo(models.Model):
     """
     A Flickr photo
     """
@@ -20,8 +20,11 @@ class  Photo(models.Model):
 
     def get_web_url(self):
         """
-        Gets the full web page ofr this photo
+        Gets the full web page for this photo
         http://www.flickr.com/photos/{user-id}/{photo-id}
         """
         return "http://www.flickr.com/photos/%s/%s" % (self.owner,self.id)
+        
+    def __unicode__(self):
+        return self.title
 
