@@ -50,6 +50,8 @@ class Combo(models.Model):
                 from flickr.models import Photo
                 title = Photo.objects.get(uuid=self.reference).title
                 self.slug = slugify(title)
+                if not self.slug:
+                    self.slug = self.reference
             except:
-                pass
+                self.slug = self.reference
         super(Combo, self).save(*args, **kwargs)

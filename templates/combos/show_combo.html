@@ -1,0 +1,36 @@
+{% extends "base.html"%}
+
+{% block main %}
+<h1>{{ photo.title }}</h1>
+<table>
+    <tr>
+        {% for color in combo.colors.all %}
+            <td style="background-color: #{{ color.hex_string }}">
+            </td>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for color in combo.colors.all %}
+            <td style="text-align: center;">#{{ color.hex_string}}</td>
+        {% endfor %}
+    </tr>
+</table>
+
+<table>
+    <tr>
+        <td style="">
+            <h2>comments</h2>
+            {{ photo.description|linebreaks }}
+        </td>
+        <td width="500px">
+            <div style="width:500px; float:right">
+                <h2>Mathematically Derived from...</h2>
+                <div style="background-color:#f3f3f3; text-align:center;">
+                    <img src="{{photo.url_m}}"><br>
+                    <span class="right">See original <a href="{{ combo.source }}">{{photo.title}}</a></span>
+                </div>
+            <div>
+        </td>
+    </tr>
+</table>
+{% endblock main %}

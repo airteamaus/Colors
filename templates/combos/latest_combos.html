@@ -1,0 +1,32 @@
+{% extends "base.html"%}
+
+{% block main %}
+
+{% for combo in combo_list.object_list %}
+<table class="series" onClick="window.location='{% url show_combo combo.slug %}'; return false;">
+    <tr>
+        {% for color in combo.colors.all %}
+            <td style="background-color: #{{ color.hex_string }}">
+            </td>
+        {% endfor %}
+    </tr>
+</table>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if combo_list.has_previous %}
+            <a href="?page={{ combo_list.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ combo_list.number }} of {{ combo_list.paginator.num_pages }}.
+        </span>
+
+        {% if combo_list.has_next %}
+            <a href="?page={{ combo_list.next_page_number }}">next</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock main %}
