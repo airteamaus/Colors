@@ -36,7 +36,15 @@ def show_combo(request, slug, template='combos/show_combo.html'):
     """
     Show a combo named by slug
     """
-    combo = Combo.objects.get(slug=slug)
+    try:
+        combo = Combo.objects.get(slug=slug)
+    except:
+        combos = Combo.objects.filter(slug=slug).order_by('-created')
+        if combos.count() > 1:
+            for combo in combos[:1]:
+                combo.slug = combo.reference
+                combo.save()
+                return show_combo(request, slug=combo.slug)
     photo = Photo.objects.get(uuid=combo.reference)
     context_dict = {
         'combo': combo,

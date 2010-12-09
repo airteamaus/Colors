@@ -28,12 +28,13 @@ class Combo(models.Model):
     colors  = models.ManyToManyField(RGBColor)
     depth   = models.CharField(choices=DEPTH_CHOICES, default='24bit', max_length=8)
     slug    = models.SlugField(blank=True)
+    title   = models.CharField(max_length=128, blank=True)
 
     def set_colors_from_image(self, image, num_colors=12):
         NUM_CLUSTERS = num_colors
         im = Image.open(image)
         
-        im = im.resize((150, 150))      # optional, to reduce time
+        im = im.resize((150, 150))      # to reduce time
         ar = scipy.misc.fromimage(im)
         shape = ar.shape
         ar = ar.reshape(scipy.product(shape[:2]), shape[2])
@@ -42,7 +43,6 @@ class Combo(models.Model):
         for r,g,b in color_list:
             color = RGBColor.objects.get(red=r, green=g, blue=b)
             self.colors.add(color)
-
 
     def save(self, *args, **kwargs):
         if not self.slug:

@@ -1,7 +1,7 @@
 {% extends "base.html"%}
 
 {% block main %}
-<h1>{{ photo.title }}</h1>
+<h1 class="pointer" onClick="window.location='{% url show_combo combo.slug %}';return false;">{{ combo.title|default:"Untitled" }}</h1>
 <table>
     <tr>
         {% for color in combo.colors.all %}
@@ -11,23 +11,31 @@
     </tr>
     <tr>
         {% for color in combo.colors.all %}
-            <td style="text-align: center;">#{{ color.hex_string}}</td>
+            <td style="text-align: center; height: 33px;">
+                #{{ color.hex_string}}
+                <br/>
+                ({{color.red}},{{color.green}},{{color.blue}})
+            </td>
         {% endfor %}
     </tr>
 </table>
 
+<ul class="voting">
+    <li>Like</li> <li>Favourite</li> <li>Flag</li>
+</ul>
+
 <table>
     <tr>
-        <td style="">
+        <td>
             <h2>comments</h2>
             {{ photo.description|linebreaks }}
         </td>
         <td width="500px">
             <div style="width:500px; float:right">
-                <h2>Mathematically Derived from...</h2>
-                <div style="background-color:#f3f3f3; text-align:center;">
+                <div style="background-color:#f3f3f3; text-align:center;padding: 10px 0px 20px 0px">
+                    <h2>Statistically derived from...</h2>
                     <img src="{{photo.url_m}}"><br>
-                    <span class="right">See original <a href="{{ combo.source }}">{{photo.title}}</a></span>
+                    <span style="padding-top:5px;">See original <a href="{{ combo.source }}">{{photo.title|default:"image"}}</a></span>
                 </div>
             <div>
         </td>

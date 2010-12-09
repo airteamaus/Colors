@@ -24,18 +24,22 @@ class Command(BaseCommand):
 
             desc = photo.get('description').get('_content')
             desc = ''.join(BeautifulSoup(desc).findAll(text=True))
-            record, created = Photo.objects.get_or_create(
-                id = photo.get('id'),
-                title = photo.get('title'),
-                description = desc,
-                owner = photo.get('owner'),
-                secret = photo.get('secret'),
-                farm = photo.get('farm'),
-                server = photo.get('server'),
-                url_m = photo.get('url_m'),
-                latitude = photo.get('latitude'),
-                longitude = photo.get('longitude'),
-            )
-            print record.description
+            try:
+                record, created = Photo.objects.get_or_create(
+                    id = photo.get('id'),
+                    title = photo.get('title'),
+                    description = desc,
+                    owner = photo.get('owner'),
+                    secret = photo.get('secret'),
+                    farm = photo.get('farm'),
+                    server = photo.get('server'),
+                    url_m = photo.get('url_m'),
+                    latitude = photo.get('latitude'),
+                    longitude = photo.get('longitude'),
+                )
+                if created:
+                    print record.description
+            except:
+                pass
         print len(photo_list)
 

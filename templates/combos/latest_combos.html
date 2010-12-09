@@ -3,6 +3,7 @@
 {% block main %}
 
 {% for combo in combo_list.object_list %}
+<h1 class="pointer" onClick="window.location='{% url show_combo combo.slug %}';return false;">{{ combo.title|default:"Untitled" }}</h1>
 <table class="series" onClick="window.location='{% url show_combo combo.slug %}'; return false;">
     <tr>
         {% for color in combo.colors.all %}

@@ -16,6 +16,7 @@ class Command(BaseCommand):
         for photo in photos:
             combo, created = Combo.objects.get_or_create(
                         reference=photo.uuid,
+                        title=photo.title,
                         dataset = 2,
                         source = photo.get_web_url(),
             )
