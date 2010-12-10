@@ -7,7 +7,7 @@
 <table class="series" onClick="window.location='{% url show_combo combo.slug %}'; return false;">
     <tr>
         {% for color in combo.colors.all %}
-            <td style="background-color: #{{ color.hex_string }}">
+            <td style="background-color: #{{ color.hex_string }}" class="color">
             </td>
         {% endfor %}
     </tr>

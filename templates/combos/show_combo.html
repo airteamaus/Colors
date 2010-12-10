@@ -5,7 +5,7 @@
 <table>
     <tr>
         {% for color in combo.colors.all %}
-            <td style="background-color: #{{ color.hex_string }}">
+            <td class="color" style="background-color: #{{ color.hex_string }}">
             </td>
         {% endfor %}
     </tr>
@@ -20,9 +20,27 @@
     </tr>
 </table>
 
-<ul class="voting">
-    <li>Like</li> <li>Favourite</li> <li>Flag</li>
+<script type="text/javascript">
+DEFAULTS = {
+    href:'{% url request_account %}',
+    width: '60%',
+    height: '60%'
+}
+
+</script>
+{% if user.is_authenticated %}
+<ul class="voting ui-corner-all">
+    <li><a href="javascript:$.colorbox({href:'{% url request_account %}'}); return false;">Like</a></li> 
+    <li><a href="javascript:$.colorbox({href:'{% url request_account %}'}); return false;">Favourite</a></li> 
+    <li><a href="javascript:$.colorbox({href:'{% url request_account %}', width: '60%'}); return false;">Flag</a></li>
 </ul>
+{% else %}
+<ul class="voting ui-corner-all">
+    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Like</a></li> 
+    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Favourite</a></li> 
+    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Flag</a></li>
+</ul>
+{% endif %}
 
 <table>
     <tr>
@@ -30,11 +48,11 @@
             <h2>comments</h2>
             {{ photo.description|linebreaks }}
         </td>
-        <td width="500px">
-            <div style="width:500px; float:right">
-                <div style="background-color:#f3f3f3; text-align:center;padding: 10px 0px 20px 0px">
+        <td width="540px">
+            <div style="width:540px; float:right">
+                <div style="background-color:#f3f3f3; text-align:center;padding: 10px 20px 20px 20px" class="ui-corner-all">
                     <h2>Statistically derived from...</h2>
-                    <img src="{{photo.url_m}}"><br>
+                    <a href="{{ combo.source }}"><img src="{{photo.url_m}}" style="padding-bottom: 20px"></a><br>
                     <span style="padding-top:5px;">See original <a href="{{ combo.source }}">{{photo.title|default:"image"}}</a></span>
                 </div>
             <div>

@@ -30,19 +30,14 @@ SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 
-# Absolute path to the directory that holds media.
-# Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = ''
-
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash if there is a path component (optional in other cases).
-# Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_ROOT = os.path.join(PROJECT_ROOT, "media")
+MEDIA_URL = '/media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
-# Examples: "http://foo.com/media/", "/media/".
-ADMIN_MEDIA_PREFIX = '/media/'
+# Examples: "http://foo.com/media/", "/media/"
+# You gotta have admin_media_prefix or else static serve doesn't work (mother fucking django)
+ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'myoz#)yu3!l4lz(*kyz%)w@l2c8uf2&ul8l!=5wnqg-_7(s@5^'
@@ -81,10 +76,10 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
-    #'django.contrib.messages',
     'color_db',
     'flickr',
     'combos',
+    'users'
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

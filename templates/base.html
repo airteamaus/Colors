@@ -5,10 +5,10 @@
     <title>{{ title|default:"ColorCo" }}</title> 
     <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico">
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"> 
-    <script type="text/javascript" src="/media/lib/js/jquery-1.4.2.min.js"></script> 
-    <script type="text/javascript" src="/media/lib/jquery-ui/js/jquery-ui-1.8.6.custom.min.js"></script> 
-    <link rel="stylesheet" type="text/css" media="all" href="/media/lib/jquery-ui/css/smoothness/jquery-ui-1.8.6.custom.css"> 	
-    
+    <link rel="stylesheet" type="text/css" media="all" href="/media/lib/colorbox/colorbox.css"> 	
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script> 
+    <script type="text/javascript" src="{{MEDIA_URL}}lib/colorbox/jquery.colorbox.js"></script>  
+     
 	<script type="text/javascript"> 
 	$(function() {
     });    
@@ -69,6 +69,18 @@
     input[type=text], input[type=password], textarea, select, .vTextField { border: 1px solid #ccc; }
     /** End of Reset **/
                  
+    /** JQuery UI the good bits? **/
+    /* Corner radius */
+    .ui-corner-tl { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; }
+    .ui-corner-tr { -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; }
+    .ui-corner-bl { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+    .ui-corner-br { -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+    .ui-corner-top { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; }
+    .ui-corner-bottom { -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+    .ui-corner-right {  -moz-border-radius-topright: 4px; -webkit-border-top-right-radius: 4px; border-top-right-radius: 4px; -moz-border-radius-bottomright: 4px; -webkit-border-bottom-right-radius: 4px; border-bottom-right-radius: 4px; }
+    .ui-corner-left { -moz-border-radius-topleft: 4px; -webkit-border-top-left-radius: 4px; border-top-left-radius: 4px; -moz-border-radius-bottomleft: 4px; -webkit-border-bottom-left-radius: 4px; border-bottom-left-radius: 4px; }
+    .ui-corner-all { -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; }
+                 
     /** Custom Styles - Edit form here only **/
     body    { margin: 12px;}
     h1      { font-size: 24px; }
@@ -76,14 +88,16 @@
     h3.title{ font-size: 50px; line-height: 70px; margin: 0px;}
     table   { width: 100%; }
     table.series { margin-bottom: 50px; cursor: pointer;}
-    td      { width: 6.25%; height: 100px; border:none;}
+    td      { width: 6.25%; border:none;}
     li      { list-style:none; display: inline; }
-        
-    .top-nav li  { font-size: 16px; margin-left: 8px;}
+    
+    .color      { height: 100px; }
+    .top-nav li { font-size: 16px; margin-left: 8px;}
     .footer     { margin-top: 24px;}
     .flickrtos  { text-align: center; font-size: 10px;}
     .pointer    { cursor: pointer;}
     .voting     { background-color: #f3f3f3; width: 33%;}
+    .modal      { }
         
     </style>
 </head> 
