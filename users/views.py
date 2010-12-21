@@ -9,8 +9,16 @@ def request_account(request, next='/', template='users/request_account.html'):
     """
     Request the users email address then send them an email with a confirmation link
     """
+    if request.method == 'POST':
+        form = RequestAccountForm(request.POST)
+        if form.is_valid():
+            next = request.META.get('HTTP_REFERER')
+            return HttpResponeRedirect('please_check_your_email')
+    else:
+        form = RequestAccountForm()
+        
     context_dict = {
-        'form': RequestAccountForm(),
+        'form': form,
         'next': next,
     }
     return render_to_response(template, context_dict, context_instance=RequestContext(request))

@@ -1,17 +1,18 @@
-<div class="modal">
-<h2>Create an Account</h2>
-
-<p>All contributors are required to register.</pv>
-
-<form method="POST">
-    <div class="align-center;">
-        {{ form.email_address.label }}
+<div class="modal align-center">
+<h2>You must be registered to contribute</h2>
+<br />
+<form method="POST" action={% url request_account %}>
+    <div class="align-left" style="width: 400px; margin-left:auto; margin-right:auto;">
+        {{ form.email_address.label }}<br/>
             
         {{ form.email_address }}{{form.email_address.errors}}{{ form.email_address.help_text }}
 
 {{ form.non_field_errors }}
         {% for hidden in form.hidden_fields %} {{ hidden }} {% endfor %} {% csrf_token %}
-        <input type="submit" id="submit" class="submit" value="Send">
+        <input type="submit" id="submit" class="submit" value="Create Account">
     </div>
 </form>
+
+<p>It's a very simple process, and we won't disclose your email address to anyone.</p>
+
 </div>

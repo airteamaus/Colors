@@ -30,15 +30,15 @@ DEFAULTS = {
 </script>
 {% if user.is_authenticated %}
 <ul class="voting ui-corner-all">
-    <li><a href="javascript:$.colorbox({href:'{% url request_account %}'}); return false;">Like</a></li> 
-    <li><a href="javascript:$.colorbox({href:'{% url request_account %}'}); return false;">Favourite</a></li> 
-    <li><a href="javascript:$.colorbox({href:'{% url request_account %}', width: '60%'}); return false;">Flag</a></li>
+    <li><a href="#" onClick="colorco.reg();">Like</a></li> 
+    <li><a href="#" onClick="colorco.reg();">Favourite</a></li> 
+    <li><a href="#" onClick="colorco.reg();">Flag</a></li>
 </ul>
 {% else %}
 <ul class="voting ui-corner-all">
-    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Like</a></li> 
-    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Favourite</a></li> 
-    <li><a href="javascript:$.colorbox(DEFAULTS); return false;">Flag</a></li>
+    <li><a href="#" onClick="colorco.reg(); return false;">Like</a></li> 
+    <li><a href="#" onClick="colorco.reg(); return false;">Favourite</a></li> 
+    <li><a href="#" onClick="colorco.reg(); return false;">Flag</a></li>
 </ul>
 {% endif %}
 
