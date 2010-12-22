@@ -9,11 +9,13 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'colors.db',
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file':'/etc/my.cnf',
+            'init_command': 'SET storage_engine=INNODB',
+        },
     }
 }
 
