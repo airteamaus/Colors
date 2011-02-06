@@ -23,10 +23,11 @@ class Command(BaseCommand):
             if not photo.imported:
                 try:
                     combo.save()
-                    print photo.url_m
+                    print photo.title
+                    photo.imported = True
+                    photo.save()
                     img = urllib2.urlopen(photo.url_m).read()
                     combo.set_colors_from_image(StringIO.StringIO(img))
-                    photo.imported = True
                     photo.save()
                     combo.save()
                     if combo.colors.all().count() == 0: #lets not import shit
@@ -35,3 +36,4 @@ class Command(BaseCommand):
                 except:
                     print 'photo %s had a problem' % photo
                     combo.delete()
+                    photo.delete()

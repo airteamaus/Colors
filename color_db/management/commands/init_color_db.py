@@ -9,7 +9,7 @@ class Command(BaseCommand):
 
     @transaction.commit_manually
     def handle(self, *args, **options):
-        for index in range(0,16777216):
+        for index in range(1060000,16777216):
             color = RGBColor()
             color.store_rgbint(index)
             if index % 20000 == 0:

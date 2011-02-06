@@ -60,7 +60,7 @@ MIDDLEWARE_CLASSES = (
     'middleware.AJAXSimpleExceptionResponse'
 )
 
-ROOT_URLCONF = 'quant.urls'
+ROOT_URLCONF = 'urls'
 
 TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT,'templates')
