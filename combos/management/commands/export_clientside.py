@@ -9,8 +9,10 @@ class Command(BaseCommand):
         combos = Combo.objects.all()
         for combo in combos:
             csc = ClientSideCombo(reference = combo.reference)
+            csc.save()
             for color in combo.colors.all():
                 new_color = ClientSideColor()
                 new_color.set(color.hex_string)
+                new_color.save()
                 csc.colors.add(new_color)
             csc.save()

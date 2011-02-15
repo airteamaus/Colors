@@ -1,3 +1,4 @@
+import struct
 import Image
 import scipy
 import scipy.misc
@@ -61,10 +62,16 @@ class Combo(models.Model):
 Client side tables - these go in SQLite and will be installed on the client IOS app.
 """  
 
-class ClientSideColor(RGBColor):
+class ClientSideColor(models.Model):
     """
     Clientside representation of a color
     """
+    index  = models.IntegerField(primary_key=True, unique=True)
+    hex_string = models.CharField(max_length=8, unique=True)
+    red    = models.IntegerField()
+    green  = models.IntegerField()
+    blue   = models.IntegerField()
+
     connection_name = 'clientside'    
     class Meta:
         db_table = 'color'
