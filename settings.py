@@ -16,8 +16,14 @@ DATABASES = {
             'read_default_file':'/etc/my.cnf',
             'init_command': 'SET storage_engine=INNODB',
         },
+    },
+    'clientside': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'clientside.db'
     }
 }
+
+DATABASE_ROUTERS = ['django_routers.ModelSpecified']
 
 FLICKR_KEY = '5acdcdc238ae03dba27665c25335c747'
 # SECRET = 'be3a961029a27e7c'

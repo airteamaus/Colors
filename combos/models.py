@@ -55,3 +55,27 @@ class Combo(models.Model):
             except:
                 self.slug = self.reference
         super(Combo, self).save(*args, **kwargs)
+  
+
+"""
+Client side tables - these go in SQLite and will be installed on the client IOS app.
+"""  
+
+class ClientSideColor(RGBColor):
+    """
+    Clientside representation of a color
+    """
+    connection_name = 'clientside'    
+    class Meta:
+        db_table = 'color'
+
+class ClientSideCombo(models.Model):
+    """
+    This is for exporting to the iphone app as a SQLlite DB file
+    """
+    reference = django_utils.UUIDField()
+    colors  = models.ManyToManyField(ClientSideColor)
+    
+    connection_name = 'clientside'    
+    class Meta:
+        db_table = 'combo'
