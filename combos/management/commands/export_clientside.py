@@ -11,6 +11,6 @@ class Command(BaseCommand):
             csc = ClientSideCombo(reference = combo.reference)
             for color in combo.colors.all():
                 new_color = ClientSideColor()
-                new_color.store_rgbint(color.index)
+                new_color.set(color.hex_string)
                 csc.colors.add(new_color)
             csc.save()

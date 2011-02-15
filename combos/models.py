@@ -69,6 +69,14 @@ class ClientSideColor(RGBColor):
     class Meta:
         db_table = 'color'
 
+    def set(self, hex_string):
+        """ six chars eg: 0a0a0a """
+        rgb_tuple = struct.unpack('BBB',hex_string.decode('hex'))
+        self.red, self.green, self.blue = rgb_tuple
+        self.hex_string = struct.pack('BBB',*rgb_tuple).encode('hex')
+        self.index = int(self.hex_string,16)
+
+
 class ClientSideCombo(models.Model):
     """
     This is for exporting to the iphone app as a SQLlite DB file
