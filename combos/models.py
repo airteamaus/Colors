@@ -89,8 +89,19 @@ class ClientSideCombo(models.Model):
     This is for exporting to the iphone app as a SQLlite DB file
     """
     reference = django_utils.UUIDField()
-    colors  = models.ManyToManyField(ClientSideColor)
+    colors  = models.ManyToManyField(ClientSideColor, through='ClientSideComboColor')
     
     connection_name = 'clientside'    
     class Meta:
         db_table = 'combo'
+
+class ClientSideComboColor(models.Model):
+    """
+    A manual through table because Django doesn't seem to know which database to create it in
+    """
+    color = models.ForeignKey(ClientSideColor)
+    combo = models.ForeignKey(ClientSideCombo)
+
+    connection_name = 'clientside'
+    class Meta:
+        db_table = 'combo_color'
