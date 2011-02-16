@@ -66,36 +66,24 @@ class ClientSideColor(models.Model):
     """
     Clientside representation of a color
     """
-    index  = models.IntegerField(primary_key=True, unique=True)
     hex_string = models.CharField(max_length=8, unique=True)
-    red    = models.IntegerField()
-    green  = models.IntegerField()
-    blue   = models.IntegerField()
 
     connection_name = 'clientside'    
     class Meta:
         db_table = 'color'
-
-    def set(self, hex_string):
-        """ six chars eg: 0a0a0a """
-        rgb_tuple = struct.unpack('BBB',hex_string.decode('hex'))
-        self.red, self.green, self.blue = rgb_tuple
-        self.hex_string = struct.pack('BBB',*rgb_tuple).encode('hex')
-        self.index = int(self.hex_string,16)
-
 
 class ClientSideCombo(models.Model):
     """
     This is for exporting to the iphone app as a SQLlite DB file
     """
     reference = django_utils.UUIDField()
-    colors  = models.ManyToManyField(ClientSideColor, through='ClientSideComboColor')
+    colors  = models.ManyToManyField(ClientSideColor, through='ClientSideColorCombo')
     
     connection_name = 'clientside'    
     class Meta:
         db_table = 'combo'
 
-class ClientSideComboColor(models.Model):
+class ClientSideColorCombo(models.Model):
     """
     A manual through table because Django doesn't seem to know which database to create it in
     """
