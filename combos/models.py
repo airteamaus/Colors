@@ -66,7 +66,7 @@ class ClientSideColor(models.Model):
     """
     Clientside representation of a color
     """
-    hex_string = models.CharField(max_length=8, unique=True)
+    hex_string = models.CharField(primary_key=True, max_length=8, unique=True)
 
     connection_name = 'clientside'    
     class Meta:
