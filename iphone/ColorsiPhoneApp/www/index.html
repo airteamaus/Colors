@@ -42,25 +42,25 @@
 		document.addEventListener("deviceready",onDeviceReady,false);
 		myScroll = new iScroll('scroller');
 		
-		
-		if (window.openDatabase) {
-			db = openDatabase("Colors", "1.0", "colors iphone database", 200000);
-			if (!db) alert("Failed to open the database on disk. Quota?");
-		} else {
-			alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
-		}
-		
-		
-		db.transaction(function(tx) {
-			tx.executeSql("SELECT COUNT(*) FROM combos", [], function(result) {
-				alert(result);
-			}, function(tx, error) {
-				tx.executeSql("CREATE TABLE WebKitStickyNotes (id REAL UNIQUE, note TEXT, timestamp \
-								REAL, left TEXT, top TEXT, zindex REAL)", [], function(result) {
-					alert(result);
-				});
-			});
-		});
+
+//		if (window.openDatabase) {
+//			db = openDatabase("Colors", "1.0", "colors iphone database", 200000);
+//			if (!db) alert("Failed to open the database on disk. Quota?");
+//		} else {
+//			alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
+//		}
+//		
+//		
+//		db.transaction(function(tx) {
+//			tx.executeSql("SELECT COUNT(*) FROM combos", [], function(result) {
+//				alert(result);
+//			}, function(tx, error) {
+//				tx.executeSql("CREATE TABLE WebKitStickyNotes (id REAL UNIQUE, note TEXT, timestamp \
+//								REAL, left TEXT, top TEXT, zindex REAL)", [], function(result) {
+//					alert(result);
+//				});
+//			});
+//		});
 
 		
 	}
