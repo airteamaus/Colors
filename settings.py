@@ -1,7 +1,7 @@
 import os
 PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -19,7 +19,7 @@ DATABASES = {
     },
     'clientside': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'clientside.db'
+        'NAME': 'iphone/ColorsiPhoneApp/www/0000000000000001.db'
     }
 }
 
