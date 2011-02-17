@@ -1,7 +1,7 @@
+*.db
 *.pyc
 .coverage
 *.log
-*.db
 .DS_Store
 *.swp
 *~.nib
