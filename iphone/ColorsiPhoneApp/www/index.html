@@ -8,6 +8,19 @@
 
     <title>ColorsiPhoneApp</title>
 	
+		
+	<style type="text/css">
+	    body, html { background-color: #444444; }
+		
+		#wrapper {
+			position:relative;
+			z-index:1;
+			width: 100%;		/* your desired width, auto and 100% are fine */
+			height: 200px;		/* element height */
+			overflow: hidden;	/* hidden|auto|scroll */
+		}
+	</style>
+	
 	<!-- iPad/iPhone specific css below, add after your main css >
 	<link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
 	<link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
@@ -17,18 +30,17 @@
     <script type="text/javascript" charset="utf-8">
 
 
-	// If you want to prevent dragging, uncomment this section
-	/*
+	// Prevent dragging
 	function preventBehavior(e) 
 	{ 
       e.preventDefault(); 
     };
 	document.addEventListener("touchmove", preventBehavior, false);
-	*/
 	
 	function onBodyLoad()
 	{
 		document.addEventListener("deviceready",onDeviceReady,false);
+		myScroll = new iScroll('scroller');
 	}
 	
 	/* When this function is called, PhoneGap has been initialized and is ready to roll */
@@ -36,10 +48,18 @@
 	{
 		// do your thing!
 	}
-    
     </script>
+	
   </head>
   <body onload="onBodyLoad()">
   	<h2>Hello there</h2>
+	<div id="wrapper">
+		<div id="scroller">
+			<ul>
+				<li>...</li>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript" charset="utf-8" src="js/iscroll-min.js"></script>
   </body>
 </html>
