@@ -24,8 +24,57 @@
  */
 - (void)applicationDidFinishLaunching:(UIApplication *)application
 {	
+	//Copy over the database if it doesn't exist 
+	// Setup some globals 
+	databaseName = @"0000000000000001.db"; 
+	masterName = @"Databases.db"; 
+	// Get the path to the Library directory and append the databaseName 
+	NSArray *libraryPaths = NSSearchPathForDirectoriesInDomains 
+	(NSLibraryDirectory, NSUserDomainMask, YES); 
+	NSString *libraryDir = [libraryPaths objectAtIndex:0]; 
+	// the directory path for the Databases.db file 
+	masterPath = [libraryDir stringByAppendingPathComponent:@"WebKit/Databases/"]; 
+	// the directory path for the 0000000000000001.db file 
+	databasePath = [libraryDir stringByAppendingPathComponent:@"WebKit/Databases/file__0/"]; 
+	// the full path for the Databases.db file 
+	masterFile = [masterPath stringByAppendingPathComponent:masterName]; 
+	// the full path for the 0000000000000001.db file 
+	databaseFile = [databasePath 
+					stringByAppendingPathComponent:databaseName]; 
+	// Execute the "checkAndCreateDatabase" function 
+	[self checkAndCreateDatabase]; 
+	
 	[ super applicationDidFinishLaunching:application ];
 }
+
+
+
+-(void) checkAndCreateDatabase{ 
+	// Check if the SQL database has already been saved to the users phone, if not then copy it over 
+	BOOL success; 
+	// Create a FileManager object, we will use this to check the status 
+	// of the database and to copy it over if required 
+	NSFileManager *fileManager = [NSFileManager defaultManager]; 
+	// Check if the database has already been created in the users filesystem 
+	success = [fileManager fileExistsAtPath:databasePath]; 
+	// If the database already exists then return without doing anything 
+	if(success) return; 
+	// If not then proceed to copy the database from the application to the users filesystem 
+	// Get the path to the database in the application package 
+	NSString *databasePathFromApp = [[[NSBundle mainBundle] resourcePath] 
+									 stringByAppendingPathComponent:databaseName]; 
+	NSString *masterPathFromApp = [[[NSBundle mainBundle] resourcePath] 
+								   stringByAppendingPathComponent:masterName]; 
+	// Create the database folder structure 
+	[fileManager createDirectoryAtPath:databasePath 
+		   withIntermediateDirectories:YES attributes:nil error:NULL]; 
+	// Copy the database from the package to the users filesystem 
+	[fileManager copyItemAtPath:databasePathFromApp toPath:databaseFile error:nil]; 
+	// Copy the Databases.db from the package to the appropriate place 
+	[fileManager copyItemAtPath:masterPathFromApp toPath:masterFile error:nil]; 
+	[fileManager release]; 
+} 
+
 
 -(id) getCommandInstance:(NSString*)className
 {
