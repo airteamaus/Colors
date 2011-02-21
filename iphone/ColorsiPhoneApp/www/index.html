@@ -30,6 +30,67 @@
     <script type="text/javascript" charset="utf-8">
 
 
+	database = {
+		init: function(){
+			/* open the database and return a reference to it
+			If the database doesn't exist yet, create it. */
+			console.log('initDatabase()');
+			try {
+				if (!window.openDatabase) {
+					console.log('not supported');
+				} else {
+					var shortName = 'colors';
+					var version = '1.0';
+					var displayName = 'Color Schemes Database';
+					var maxSize = 50 * 1024 * 1024; // in bytes
+					
+					var db = openDatabase(shortName, version, displayName, maxSize);
+				}
+			} catch(e) {
+				// Error handling code goes here.
+				if (e == 2) {
+					// Version number mismatch.
+					console.log("Invalid database version.");
+				} else {
+					console.log("Unknown error "+e+".");
+				}
+				return null;
+			}
+			return db;
+		},
+		has_tables: function(db){
+			/* Have the tables been created? */
+			return false;
+		},
+		spank: function(db){
+			/* Drop and recreate database */
+			var reader = new FileReader();
+			reader.onload = function(evt){
+				console.log('reader.onload()');
+				var raw_sql = evt.target.result; // asign so it's availabe inside the anonymous func
+				
+				db.transaction(function(tx){
+					var lines = raw_sql.split(/;/); //split the string into an array of statements
+					for (var i = 0; i < lines.length; i++) {
+						tx.executeSQL(lines[i]);
+					}
+				}, database.error, function(evt){
+					// success?
+				});
+			};
+			
+			reader.onerror = function(evt){
+				console.log('fail');
+				console.log(evt.target);
+			};
+			
+			reader.readAsText( "./../ColorsiPhoneApp.app/www/dump.sql"); // WTF!
+		}
+	}
+
+
+
+
 	// Prevent dragging
 	function preventBehavior(e) 
 	{ 
@@ -37,38 +98,20 @@
     };
 	document.addEventListener("touchmove", preventBehavior, false);
 	
+	/* Establish hook for on device ready */
 	function onBodyLoad()
 	{
 		document.addEventListener("deviceready",onDeviceReady,false);
 		myScroll = new iScroll('scroller');
-		
-
-//		if (window.openDatabase) {
-//			db = openDatabase("Colors", "1.0", "colors iphone database", 200000);
-//			if (!db) alert("Failed to open the database on disk. Quota?");
-//		} else {
-//			alert("Couldn't open the database.  Please try with a WebKit nightly with this feature enabled");
-//		}
-//		
-//		
-//		db.transaction(function(tx) {
-//			tx.executeSql("SELECT COUNT(*) FROM combos", [], function(result) {
-//				alert(result);
-//			}, function(tx, error) {
-//				tx.executeSql("CREATE TABLE WebKitStickyNotes (id REAL UNIQUE, note TEXT, timestamp \
-//								REAL, left TEXT, top TEXT, zindex REAL)", [], function(result) {
-//					alert(result);
-//				});
-//			});
-//		});
-
-		
 	}
 	
 	/* When this function is called, PhoneGap has been initialized and is ready to roll */
 	function onDeviceReady()
 	{
-		// do your thing!
+		console.log('onDeviceReady()');		
+		db = database.init();  // Global
+		database.has_tables(db) || database.spank(db);
+		
 	}
     </script>
 	
