@@ -1,5 +1,3 @@
-PRAGMA foreign_keys=OFF;
-BEGIN TRANSACTION;
 CREATE TABLE "color" (
     "hex_string" varchar(8) NOT NULL PRIMARY KEY
 );
@@ -43325,4 +43323,3 @@ INSERT INTO "combo_color" VALUES(22041,'aa8922',1815);
 INSERT INTO "combo_color" VALUES(22042,'ddbd21',1815);
 CREATE INDEX "combo_color_eab7fe80" ON "combo_color" ("color_id");
 CREATE INDEX "combo_color_ed060b3f" ON "combo_color" ("combo_id");
-COMMIT;
