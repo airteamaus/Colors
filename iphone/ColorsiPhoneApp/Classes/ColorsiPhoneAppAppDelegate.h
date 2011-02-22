@@ -10,13 +10,6 @@
 #import "PhoneGapDelegate.h"
 
 @interface ColorsiPhoneAppAppDelegate : PhoneGapDelegate {
-	// Database variables 
-	NSString *databaseName; 
-	NSString *databasePath; 
-	NSString *databaseFile; 
-	NSString *masterName; 
-	NSString *masterPath; 
-	NSString *masterFile; 
 }
 
 @end

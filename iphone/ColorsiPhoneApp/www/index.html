@@ -39,13 +39,12 @@
 		},
 		null_data_callback: function(tx, results)
 		{
-			console.log('hello joe');
-			return false;
+			// nothing to see here
 		},		
 		/*! This is used as a data handler for a request that should return no data. */
 		success_callback: function()
 		{
-			console.log('apparently a success');
+			console.log('apparently a success!');
 		},
 		/* open the database and return a reference to it
 		If the database doesn't exist yet, create it. */
@@ -81,8 +80,8 @@
 			var reader = new FileReader();
 			reader.onload = function(evt)
 			{
-				var sql_array = evt.target.result.split(';');
-				callback && callback(sql_array);			
+				lines = evt.target.result.split(';');
+				callback && callback();			
 			};
 			
 			reader.onerror = function(evt)
@@ -93,21 +92,21 @@
 			
 			reader.readAsText( "./../ColorsiPhoneApp.app/www/dump.sql"); // WTF!
 		},
+		populate_db: function(tx)
+		{			
+			tx.executeSql('drop table if exists color');
+			tx.executeSql('drop table if exists combo');
+			tx.executeSql('drop table if exists combo_color');
+			for (var i = 0; i < lines.length; i++)
+			{
+				var query = lines[i].replace(/\n/g,'');
+				console.log(query);
+				tx.executeSql(query);
+			}
+		},
 		load_from_file: function(lines)
 		{
-			db.transaction( 
-				function(tx)
-				{
-					console.log(lines.length + ' SQL statements to Execute');
-					for (var i = 0; i < lines.length; i++)
-					{
-						var query = lines[i].replace(/\n/g,'') + ';';
-						console.log('SQL: ' + query);
-						tx.executeSQL(query, [], nullDataHandler, errorHandler);
-						console.log('Executed: ' + query);
-					}
-				}, 
-			database.error_callback, database.success_callback );
+			db.transaction( database.populate_db, database.error_callback, database.success_callback );
 		}
 	}
 
