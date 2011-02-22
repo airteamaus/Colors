@@ -105,7 +105,7 @@
 		},
 		load_from_file: function(lines)
 		{
-			db.transaction( database.populate_db, database.success_callback, database.error_callback );
+			db.transaction( database.populate_db, database.error_callback, database.success_callback );
 		}
 	}
 
