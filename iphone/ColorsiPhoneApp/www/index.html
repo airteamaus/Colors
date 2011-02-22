@@ -34,8 +34,7 @@
 		/* Transaction Error Callback */
 		error_callback: function(error)
 		{
-			console.log('Oops.  Error was '+error.message+' (Code '+error.code+')');
-			return false;
+			console.log('Oops. '+error.message+' (Code '+error.code+')');
 		},
 		null_data_callback: function(tx, results)
 		{
@@ -94,19 +93,19 @@
 		},
 		populate_db: function(tx)
 		{			
-			tx.executeSql('drop table if exists color');
-			tx.executeSql('drop table if exists combo');
-			tx.executeSql('drop table if exists combo_color');
+			tx.executeSql('drop table if exists "color"');
+			tx.executeSql('drop table if exists "combo"');
+			tx.executeSql('drop table if exists "combo_color"');
 			for (var i = 0; i < lines.length; i++)
 			{
 				var query = lines[i].replace(/\n/g,'');
-				console.log(query);
+				//console.log(query);
 				tx.executeSql(query);
 			}
 		},
 		load_from_file: function(lines)
 		{
-			db.transaction( database.populate_db, database.error_callback, database.success_callback );
+			db.transaction( database.populate_db, database.success_callback, database.error_callback );
 		}
 	}
 
