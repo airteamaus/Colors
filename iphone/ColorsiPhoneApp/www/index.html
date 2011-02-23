@@ -27,8 +27,7 @@
     <!-- If you application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
     <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
     <script type="text/javascript" charset="utf-8">
-        
-        
+
         database = {
             /* open the database and return a reference to it
              If the database doesn't exist yet, create it. */
@@ -62,7 +61,7 @@
                     return null;
                 }
             },
-            
+
             read_file: function(filename, callback)
             {
                 /* Drop and recreate database */
@@ -93,12 +92,13 @@
                 console.log('Results: '+JSON.stringify(tx));
             },		
             
-            /*! This is used as a data handler for a request that should return no data. */
+            /* This is used as a data handler for a request that should return no data. */
             success_callback: function()
             {
                 console.log('apparently a success!');
             },
             
+            /* SQL Statements to drop and recreate the colors database */
             populate_exec_sql: function(tx)
             {			
                 tx.executeSql('drop table if exists "color"');

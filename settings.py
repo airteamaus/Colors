@@ -19,7 +19,7 @@ DATABASES = {
     },
     'clientside': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'iphone/ColorsiPhoneApp/www/0000000000000001.db'
+        'NAME': 'iphone/Colors/Resources/combos.db'
     }
 }
 
