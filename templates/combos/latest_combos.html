@@ -3,11 +3,13 @@
 {% block main %}
 
 {% for combo in combo_list.object_list %}
-<div>
+<div class="combo-control-wrap">
+    <a href="{% url delete_combo combo.reference %}?page={{ combo_list.number }}">
+        <img class="float-right hidden control" src="{{ MEDIA_URL }}img/trash_stroke_24x24.png" />
+    </a>
     <h1 class="pointer" onClick="window.location='{% url show_combo combo.slug %}';return false;">
            {{ combo.title|default:"Untitled" }}
     </h1>
-    <img class="float-right hidden" src="{{ MEDIA_URL }}img/trash_stroke_24x24.png">
 </div>
 <table class="series" onClick="window.location='{% url show_combo combo.slug %}'; return false;">
     <tr>
@@ -35,4 +37,12 @@
     </span>
 </div>
 
+<script type="text/javascript">
+$(function(){
+    $('.combo-control-wrap').hover(
+        function(){$(this).find('.control').show();},
+        function(){$(this).find('.control').hide();}
+    );
+});
+</script>
 {% endblock main %}

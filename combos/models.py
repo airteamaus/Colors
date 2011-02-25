@@ -31,7 +31,7 @@ class Combo(models.Model):
     slug    = models.SlugField(blank=True)
     title   = models.CharField(max_length=128, blank=True)
 
-    def set_colors_from_image(self, image, num_colors=12):
+    def set_colors_from_image(self, image, num_colors=8):
         NUM_CLUSTERS = num_colors
         im = Image.open(image)
         

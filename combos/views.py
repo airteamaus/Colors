@@ -53,6 +53,16 @@ def show_combo(request, slug, template='combos/show_combo.html'):
     }
     return render_to_response(template, context_dict, context_instance=RequestContext(request))
     
+def delete_combo(request, uuid, template='combos/latest_combos.html'):
+    combo = get_object_or_404(Combo, reference = uuid)
+    combo.delete()
+    # if page is invalid, default to first
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    return HttpResponseRedirect(reverse(latest_combos) + '?page=%s'%page )
     
 def latest_combos(request, order_by='-updated', template='combos/latest_combos.html'):
     combos = Combo.objects.order_by(order_by)
