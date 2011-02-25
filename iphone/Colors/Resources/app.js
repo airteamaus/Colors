@@ -58,7 +58,7 @@ create_row_from_combo = function(combo)  // combo is an aray of color values (st
 get_array_of_combos = function()
 {
     Titanium.API.info('Querying the database');
-    var iterator = db.execute('SELECT color_id, combo_id FROM combo_color');
+    var iterator = db.execute('SELECT color_id, combo_id FROM combo_color limit 5000');
     var combos = [];
     while (iterator.isValidRow())
     {
