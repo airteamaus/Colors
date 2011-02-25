@@ -4,8 +4,10 @@
 
 {% for combo in combo_list.object_list %}
 <div>
-    <div class="float-right"><img src="{{ MEDIA_URL }}img/trash_stroke_32x32.png"></div>
-    <h1 class="pointer" onClick="window.location='{% url show_combo combo.slug %}';return false;">{{ combo.title|default:"Untitled" }}</h1>
+    <h1 class="pointer" onClick="window.location='{% url show_combo combo.slug %}';return false;">
+           {{ combo.title|default:"Untitled" }}
+    </h1>
+    <img class="float-right hidden" src="{{ MEDIA_URL }}img/trash_stroke_24x24.png">
 </div>
 <table class="series" onClick="window.location='{% url show_combo combo.slug %}'; return false;">
     <tr>
