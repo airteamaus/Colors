@@ -4,24 +4,6 @@
 
 var db = Ti.Database.install('./combos.db', 'colors');
 
-// create tab group
-var tabGroup = Titanium.UI.createTabGroup();
-
-//
-// create base UI tab and root window
-//
-var win1 = Titanium.UI.createWindow({  
-    title:'Color Palettes',
-    backgroundColor:'#fff',
-    barColor: '#0a0a0a',
-    color: '#9d9896'
-});
-var tab1 = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
-    title:'All Palettes',
-    window:win1
-});
-
 /* 
 Accepts: An array of strings. Each string is the CSS hex code for a color
 Returns: A Titanium.UI.TableViewRow with the combo rendered
@@ -55,6 +37,9 @@ create_row_from_combo = function(combo)  // combo is an aray of color values (st
 };
 
 
+
+/* Query the database. Returns an array of arrays.
+*/
 get_array_of_combos = function()
 {
     Titanium.API.info('Querying the database');
@@ -77,8 +62,24 @@ get_array_of_combos = function()
     return combos;    
 };
 
+// create tab group
+var tabGroup = Titanium.UI.createTabGroup();
+//
+// create base UI tab and root window
+//
+var win_browse = Titanium.UI.createWindow({  
+    title:'Browse',
+    backgroundColor:'#fff',
+    barColor: '#0a0a0a',
+    color: '#9d9896'
+});
+var tab_browse = Titanium.UI.createTab({  
+    icon:'KS_nav_views.png',
+    title:'Browse',
+    window:win_browse
+});
 
-var table = Ti.UI.createTableView({
+var table_browse = Ti.UI.createTableView({
     backgroundColor:'#000',
     separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE
 });
@@ -95,24 +96,24 @@ for (var i=1; i <= combos.length; i++)
     if ((combo) && (combo.length > 8) && (combo.length < 13))
     {
         //Titanium.API.info('Now to append to the table the row that is combos['+i+']');
-        table.appendRow(row);
+        table_browse.appendRow(row);
     };
 };
 
 Titanium.API.info('Render the table please ...');
-win1.add(table);
-
+win_browse.add(table_browse);
+Titanium.API.info('Done.');
 //
 // create controls tab and root window
 //
-var win2 = Titanium.UI.createWindow({  
+var win_favourites = Titanium.UI.createWindow({  
     title:'Favourites',
     backgroundColor:'#fff'
 });
-var tab2 = Titanium.UI.createTab({  
+var tab_favourites = Titanium.UI.createTab({  
     icon:'KS_nav_ui.png',
     title:'Favourites',
-    window:win2
+    window:win_favourites
 });
 
 var label2 = Titanium.UI.createLabel({
@@ -123,15 +124,25 @@ var label2 = Titanium.UI.createLabel({
 	width:'auto'
 });
 
-win2.add(label2);
+win_favourites.add(label2);
 
-
+var win_random = Titanium.UI.createWindow({  
+    title:'Shuffle',
+    backgroundColor:'#fff'
+});
+var tab_random = Titanium.UI.createTab({  
+    icon:'KS_nav_ui.png',
+    title:'Shuffle',
+    window:win_random
+});
 
 //
 //  add tabs
 //
-tabGroup.addTab(tab1);  
-tabGroup.addTab(tab2);  
+tabGroup.addTab(tab_browse);  
+tabGroup.addTab(tab_random);
+tabGroup.addTab(tab_favourites);
+
 
 
 // open tab group
