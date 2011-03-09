@@ -1,3 +1,13 @@
+/*
+     ____  _      _          _   _   _     _                       
+    |  _ \(_) ___| |__      / \ | |_| | __(_)_ __  ___  ___  _ __  
+    | |_) | |/ __| '_ \    / _ \| __| |/ /| | '_ \/ __|/ _ \| '_ \ 
+    |  _ <| | (__| | | |  / ___ \ |_|   < | | | | \__ \ (_) | | | |
+    |_| \_\_|\___|_| |_| /_/   \_\__|_|\_\|_|_| |_|___/\___/|_| |_|
+
+    Copyright Rich Atkinson 2011 All Rights Reserved
+*/
+
 // this sets the background color of the master UIView (when there are no windows/tab groups on it)
 //Titanium.UI.setBackgroundColor('#000');
 //Titanium.UI.iPhone.statusBarStyle = Titanium.UI.iPhone.StatusBar.OPAQUE_BLACK;
