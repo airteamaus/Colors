@@ -1,12 +1,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
     <head>
-        <!-- Change this if you want to allow scaling -->
         <meta name="viewport" content="width=default-width; user-scalable=no" />
-        
         <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
     
-    <title>ColorsiPhoneApp</title>
+    <title>Load WebSQL Database from text file of SQL statements;</title>
 
     <style type="text/css">
         body, html { background-color: #444444; }
@@ -14,17 +12,13 @@
         #wrapper {
             position:relative;
             z-index:1;
-            width: 100%;		/* your desired width, auto and 100% are fine */
-            height: 200px;		/* element height */
-            overflow: hidden;	/* hidden|auto|scroll */
+            width: 100%;        /* your desired width, auto and 100% are fine */
+            height: 200px;      /* element height */
+            overflow: hidden;   /* hidden|auto|scroll */
         }
     </style>
     
-    <!-- iPad/iPhone specific css below, add after your main css >
-     <link rel="stylesheet" media="only screen and (max-device-width: 1024px)" href="ipad.css" type="text/css" />		
-     <link rel="stylesheet" media="only screen and (max-device-width: 480px)" href="iphone.css" type="text/css" />		
-     -->
-    <!-- If you application is targeting iOS BEFORE 4.0 you MUST put json2.js from http://www.JSON.org/json2.js into your www directory and include it here -->
+    
     <script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
     <script type="text/javascript" charset="utf-8">
 
@@ -62,14 +56,23 @@
                 }
             },
 
+            /* Takes the *filename* which represents a text file
+               made by issuing the command "sqlite .dump <database_name>".
+               
+               Then splits the string into an array of strings, each elt is
+               an individual SQL statment (without the trailing ';') 
+               
+               Finally, execute the callback if provided
+            */
             read_file: function(filename, callback)
             {
                 /* Drop and recreate database */
                 var reader = new FileReader();
                 reader.onload = function(evt)
                 {
-                    lines = evt.target.result.split(';');
-                    callback && callback();			
+                    var lines = evt.target.result.split(';');
+                    callback && callback(lines);
+                    callback || console.log('no callback provided');			
                 };
                 
                 reader.onerror = function(evt)
@@ -89,21 +92,20 @@
             
             tx_results_callback: function(tx, results)
             {
-                console.log('Results: '+JSON.stringify(tx));
+                console.log('Results: '+ JSON.stringify(tx));
             },		
             
             /* This is used as a data handler for a request that should return no data. */
             success_callback: function()
             {
-                console.log('apparently a success!');
+                console.log('apparently we have a success!');
             },
             
-            /* SQL Statements to drop and recreate the colors database */
+            /* Drop and recreate the colors database */
             populate_exec_sql: function(tx)
             {			
-                tx.executeSql('drop table if exists "color"');
-                tx.executeSql('drop table if exists "combo"');
-                tx.executeSql('drop table if exists "combo_color"');
+                // drop all tables;
+                tx.executeSql("select 'drop table ' || name || ';' from sqlite_master where type = 'table';");
                 for (var i = 0; i < lines.length; i++)
                 {
                     var query = lines[i].replace(/\n/g, '');        // strip newline
@@ -117,35 +119,27 @@
             },
         }
         
-        
-        // Prevent dragging
-        function preventBehavior(e) 
-        { 
-            e.preventDefault(); 
-        };
-        document.addEventListener("touchmove", preventBehavior, false);
-        
-        /* Establish hook for on device ready */
-        function onBodyLoad()
-        {
-            document.addEventListener("deviceready",onDeviceReady,false);
-        }
-        
-        
-        /* When this function is called, PhoneGap has been initialized and is ready to roll */
+        /* PhoneGap has been initialized and this function is called by the onDeviceReady event listener */
         function onDeviceReady()
         {
             console.log('onDeviceReady()');
             database.init();  // Global
-            var sqlfile = "./../ColorsiPhoneApp.app/www/dump.sql"; //WTF!
+            var sqlfile = "./../ColorsiPhoneApp.app/www/dump.sql"; //relative path required by phonegap!
             database.read_file( sqlfile, database.populate_db );
             myScroll = new iScroll('scroller');
         }
+        
+        /* Establish an event listener for when the Phonegap APIs are initialised and ready. */
+        function onBodyLoad()
+        {
+            document.addEventListener("deviceready", onDeviceReady, false);
+        }
+        
         </script>
     
     </head>
     <body onload="onBodyLoad()">
-        <h2>Hello there</h2>
+        <h2>Demo to load a Safari WebSQL database from a text file of SQL statements created using the sqlite .dump command</h2>
         <div id="wrapper">
             <div id="scroller">
                 <ul>
@@ -153,6 +147,5 @@
                 </ul>
             </div>
         </div>
-        <script type="text/javascript" charset="utf-8" src="js/iscroll-min.js"></script>
     </body>
 </html>

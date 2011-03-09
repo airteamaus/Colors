@@ -79,13 +79,13 @@ class ClientSideCombo(models.Model):
     reference = django_utils.UUIDField()
     colors  = models.ManyToManyField(ClientSideColor, through='ClientSideColorCombo')
     
-    connection_name = 'clientside'    
+    connection_name = 'clientside'    # uses lib/django_rounters.ModelSpecified
     class Meta:
         db_table = 'combo'
 
 class ClientSideColorCombo(models.Model):
     """
-    A manual through table because Django doesn't seem to know which database to create it in
+    A manual 'through table' because Django doesn't seem to know which database to create it in
     """
     color = models.ForeignKey(ClientSideColor)
     combo = models.ForeignKey(ClientSideCombo)

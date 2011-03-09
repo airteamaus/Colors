@@ -2,13 +2,14 @@
 //Titanium.UI.setBackgroundColor('#000');
 //Titanium.UI.iPhone.statusBarStyle = Titanium.UI.iPhone.StatusBar.OPAQUE_BLACK;
 
-var db = Ti.Database.install('./combos.db', 'colors');
+Titanium.API.info('Getting a reference to the DB');
+var db = Titanium.Database.install('./combos.db', 'colors');
 
 /* 
 Accepts: An array of strings. Each string is the CSS hex code for a color
 Returns: A Titanium.UI.TableViewRow with the combo rendered
 */
-create_row_from_combo = function(combo)  // combo is an aray of color values (strings)
+create_row_from_combo = function(combo, index)  // combo is an aray of color values (strings)
 {
     //Titanium.API.info('Creating row for: '+ combo);
     var visible_rows = 12;  // Not the actual number displayed, but here for tweaking
@@ -19,7 +20,9 @@ create_row_from_combo = function(combo)  // combo is an aray of color values (st
     var row = Ti.UI.createTableViewRow({
         height: Math.round(height * 1.1),
         borderColor: '#000',
-        className: 'combo'
+        className: 'combo',
+        path:'./combo.js',
+        id: index
     });
     
     var cols = [];
@@ -37,18 +40,19 @@ create_row_from_combo = function(combo)  // combo is an aray of color values (st
 };
 
 
-
 /* Query the database. Returns an array of arrays.
 */
 get_array_of_combos = function()
 {
     Titanium.API.info('Querying the database');
     var iterator = db.execute('SELECT color_id, combo_id FROM combo_color limit 5000');
+    //var iterator = db.execute('SELECT combo.reference, combo.id, color.color_id FROM combo, combo_color color WHERE combo.id = color.combo_id;');
     var combos = [];
     while (iterator.isValidRow())
     {
-        var combo = parseInt(iterator.fieldByName('combo_id'), 10);
+        var combo = parseInt(iterator.fieldByName('combo_id'), 10); //base 10
         var color = iterator.fieldByName('color_id');
+        //var reference = iterator.fieldByName('reference');
         if (combos[combo])
         {
             combos[combo].push(color);
@@ -56,10 +60,11 @@ get_array_of_combos = function()
         else 
         {
             combos[combo] = [color];
+            //index[combo] = reference;
         };
     	iterator.next();
     };
-    return combos;    
+    return combos;
 };
 
 // create tab group
@@ -92,13 +97,30 @@ Titanium.API.info('Now to make '+ combos.length +' rows from these ...');
 for (var i=1; i <= combos.length; i++)
 {
     var combo = combos[i];
-    var row = combo && create_row_from_combo(combo);
+    var row = combo && create_row_from_combo(combo, i);
     if ((combo) && (combo.length > 8) && (combo.length < 13))
     {
-        //Titanium.API.info('Now to append to the table the row that is combos['+i+']');
         table_browse.appendRow(row);
     };
 };
+
+table_browse.addEventListener('click', function(e)
+{
+	if (e.rowData.path)
+	{
+		var win = Titanium.UI.createWindow({
+		    barColor: '#0a0a0a',
+			url: e.rowData.path,
+			title: 'Combo Detail'
+		});
+
+		var combo = e.rowData.id;
+		//Titanium.API.info('Have we got a reference: ' + combo);
+		win.combo = combo;
+		tab_browse.open(win);
+	}
+});
+
 
 Titanium.API.info('Render the table please ...');
 win_browse.add(table_browse);
