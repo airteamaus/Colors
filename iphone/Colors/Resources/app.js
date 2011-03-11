@@ -121,7 +121,7 @@ table_browse.addEventListener('click', function(e)
 		var win = Titanium.UI.createWindow({
 		    barColor: '#0a0a0a',
 			url: e.rowData.path,
-			title: 'Combo Detail'
+			title: 'Palette'
 		});
 
 		var combo = e.rowData.id;
