@@ -118,10 +118,27 @@ table_browse.addEventListener('click', function(e)
 {
 	if (e.rowData.path)
 	{
+	    // Save button opens an options dialog 
+	    var button = Titanium.UI.createButton({
+	        title: 'Options'
+	        //image: Titanium.UI.iPhone.SystemIcon.DOWNLOADS
+	    });
+	    button.addEventListener('click',function(e)
+        {
+            // modal options dialog
+    	    var options = Titanium.UI.createOptionDialog({
+    	        title: 'Palette Options',
+                options: ['Download', 'Add to Favourites', 'Like', 'Dislike', 'Cancel'],
+                cancel: 4
+    	    });
+    	    options.show();
+        });
+        
 		var win = Titanium.UI.createWindow({
 		    barColor: '#0a0a0a',
 			url: e.rowData.path,
-			title: 'Palette'
+			title: 'Palette',
+			rightNavButton: button
 		});
 
 		var combo = e.rowData.id;

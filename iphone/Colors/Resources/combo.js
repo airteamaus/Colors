@@ -13,7 +13,7 @@ var db = Titanium.Database.install('./combos.db', 'colors');
 
 Titanium.API.info('Show combo '+ combo_id);
 
-// Returns true of false depending on if the color is dark.
+// Returns true if the color is dark.
 is_dark_color = function(hexcode){
     if (hexcode.length == 6)
     {
