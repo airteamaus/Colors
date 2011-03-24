@@ -89,7 +89,7 @@ var win_browse = Titanium.UI.createWindow({
     color: '#9d9896'
 });
 var tab_browse = Titanium.UI.createTab({  
-    icon:'KS_nav_views.png',
+    icon:'tab_icons/icon_home.png',
     title:'Browse',
     window:win_browse
 });
@@ -120,8 +120,8 @@ table_browse.addEventListener('click', function(e)
 	{
 	    // Save button opens an options dialog 
 	    var button = Titanium.UI.createButton({
-	        title: 'Options'
-	        //image: Titanium.UI.iPhone.SystemIcon.DOWNLOADS
+	        //title: 'Options'
+	        image: 'nav_icons/icon_download.png'
 	    });
 	    button.addEventListener('click',function(e)
         {
@@ -152,15 +152,16 @@ table_browse.addEventListener('click', function(e)
 Titanium.API.info('Render the table please ...');
 win_browse.add(table_browse);
 Titanium.API.info('Done.');
+
 //
-// create controls tab and root window
+// Window Favourites
 //
 var win_favourites = Titanium.UI.createWindow({  
     title:'Favourites',
     backgroundColor:'#fff'
 });
 var tab_favourites = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
+    icon: 'tab_icons/icon_favorites.png',
     title:'Favourites',
     window:win_favourites
 });
@@ -175,14 +176,30 @@ var label2 = Titanium.UI.createLabel({
 
 win_favourites.add(label2);
 
+//
+// Window Random
+//
 var win_random = Titanium.UI.createWindow({  
     title:'Shuffle',
     backgroundColor:'#fff'
 });
 var tab_random = Titanium.UI.createTab({  
-    icon:'KS_nav_ui.png',
+    icon:'tab_icons/icon_help.png',
     title:'Shuffle',
     window:win_random
+});
+
+//
+// Window Settings
+//
+var win_settings = Titanium.UI.createWindow({  
+    title:'Settings',
+    backgroundColor:'#fff'
+});
+var tab_settings = Titanium.UI.createTab({  
+    icon: 'tab_icons/icon_settings.png',
+    title:'Settings',
+    window:win_settings
 });
 
 //
@@ -191,6 +208,8 @@ var tab_random = Titanium.UI.createTab({
 tabGroup.addTab(tab_browse);  
 tabGroup.addTab(tab_random);
 tabGroup.addTab(tab_favourites);
+tabGroup.addTab(tab_settings);
+
 
 
 
