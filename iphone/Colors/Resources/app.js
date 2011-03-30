@@ -15,9 +15,46 @@
 Titanium.API.info('Getting a reference to the DB');
 var db = Titanium.Database.install('./combos.db', 'colors');
 
+// create tab group
+var tabGroup = Titanium.UI.createTabGroup();
+
+
+/******************************************************************
+ Functions
+ ******************************************************************/
+
 /* 
-Accepts: An array of strings. Each string is the CSS hex code for a color
-Returns: A Titanium.UI.TableViewRow with the combo rendered
+ Query the database. Return an array of arrays (combos).
+*/
+get_array_of_combos = function()
+{
+    Titanium.API.info('Querying the database');
+    var iterator = db.execute('SELECT color_id, combo_id FROM combo_color limit 5000');
+    //var iterator = db.execute('SELECT combo.reference, combo.id, color.color_id FROM combo, combo_color color WHERE combo.id = color.combo_id;');
+    var combos = [];
+    while (iterator.isValidRow())
+    {
+        var combo = parseInt(iterator.fieldByName('combo_id'), 10); //base 10
+        var color = iterator.fieldByName('color_id');
+        //var reference = iterator.fieldByName('reference');
+        if (combos[combo])
+        {
+            combos[combo].push(color);
+        }
+        else 
+        {
+            combos[combo] = [color];
+            //index[combo] = reference;
+        };
+    	iterator.next();
+    };
+    return combos;
+};
+
+
+/* 
+ Accepts: An array of strings. Each string is the CSS hex code for a color
+ Returns: A Titanium.UI.TableViewRow with the combo rendered
 */
 create_row_from_combo = function(combo, index)  // combo is an aray of color values (strings)
 {
@@ -50,47 +87,19 @@ create_row_from_combo = function(combo, index)  // combo is an aray of color val
 };
 
 
-/* Query the database. Returns an array of arrays.
-*/
-get_array_of_combos = function()
-{
-    Titanium.API.info('Querying the database');
-    var iterator = db.execute('SELECT color_id, combo_id FROM combo_color limit 5000');
-    //var iterator = db.execute('SELECT combo.reference, combo.id, color.color_id FROM combo, combo_color color WHERE combo.id = color.combo_id;');
-    var combos = [];
-    while (iterator.isValidRow())
-    {
-        var combo = parseInt(iterator.fieldByName('combo_id'), 10); //base 10
-        var color = iterator.fieldByName('color_id');
-        //var reference = iterator.fieldByName('reference');
-        if (combos[combo])
-        {
-            combos[combo].push(color);
-        }
-        else 
-        {
-            combos[combo] = [color];
-            //index[combo] = reference;
-        };
-    	iterator.next();
-    };
-    return combos;
-};
+/******************************************************************
+ Home Tab + Window
+ ******************************************************************/
 
-// create tab group
-var tabGroup = Titanium.UI.createTabGroup();
-//
-// create base UI tab and root window
-//
 var win_browse = Titanium.UI.createWindow({  
-    title:'Browse',
+    title:'Home',
     backgroundColor:'#fff',
     barColor: '#0a0a0a',
     color: '#9d9896'
 });
 var tab_browse = Titanium.UI.createTab({  
     icon:'tab_icons/icon_home.png',
-    title:'Browse',
+    title:'Home',
     window:win_browse
 });
 
@@ -99,21 +108,24 @@ var table_browse = Ti.UI.createTableView({
     separatorStyle:Ti.UI.iPhone.TableViewSeparatorStyle.NONE
 });
 
+// Get some combos form the database
+// TODO: Maybe randomise this?
 Titanium.API.info('Get array of combos ...');
 var combos = get_array_of_combos();
-
 Titanium.API.info('Now to make '+ combos.length +' rows from these ...');
 
+// Iterate over combos, rendering a tableRow for each
 for (var i=1; i <= combos.length; i++)
 {
     var combo = combos[i];
     var row = combo && create_row_from_combo(combo, i);
-    if ((combo) && (combo.length > 8) && (combo.length < 13))
+    if ((combo) && (combo.length > 8) && (combo.length < 13)) // remove combos of inappropriate length
     {
         table_browse.appendRow(row);
     };
 };
 
+// Event Listener for when a row is clicked on.
 table_browse.addEventListener('click', function(e)
 {
 	if (e.rowData.path)
@@ -123,13 +135,14 @@ table_browse.addEventListener('click', function(e)
 	        //title: 'Options'
 	        image: 'nav_icons/icon_download.png'
 	    });
+	    // Event Listener for the options button, in the navbar of the child tab
 	    button.addEventListener('click',function(e)
         {
             // modal options dialog
     	    var options = Titanium.UI.createOptionDialog({
     	        title: 'Palette Options',
-                options: ['Download', 'Add to Favourites', 'Like', 'Dislike', 'Cancel'],
-                cancel: 4
+                options: ['Download', 'Add to Favourites', 'Cancel'],
+                cancel: 2
     	    });
     	    options.show();
         });
@@ -153,12 +166,14 @@ Titanium.API.info('Render the table please ...');
 win_browse.add(table_browse);
 Titanium.API.info('Done.');
 
-//
-// Window Favourites
-//
+/******************************************************************
+ Favourites Tab + Window
+ ******************************************************************/
 var win_favourites = Titanium.UI.createWindow({  
-    title:'Favourites',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    barColor: '#0a0a0a',
+    color: '#9d9896',
+    title:'Favourites'
 });
 var tab_favourites = Titanium.UI.createTab({  
     icon: 'tab_icons/icon_favorites.png',
@@ -176,42 +191,43 @@ var label2 = Titanium.UI.createLabel({
 
 win_favourites.add(label2);
 
-//
-// Window Random
-//
+/******************************************************************
+ Surprise Tab + Window
+ ******************************************************************/
 var win_random = Titanium.UI.createWindow({  
-    title:'Shuffle',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    barColor: '#0a0a0a',
+    color: '#9d9896',
+    title:'Surprise'
 });
 var tab_random = Titanium.UI.createTab({  
     icon:'tab_icons/icon_help.png',
-    title:'Shuffle',
+    title:'Surprise',
     window:win_random
 });
 
-//
-// Window Settings
-//
+/******************************************************************
+ Me Tab + Window
+ ******************************************************************/
 var win_settings = Titanium.UI.createWindow({  
-    title:'Settings',
-    backgroundColor:'#fff'
+    backgroundColor:'#fff',
+    barColor: '#0a0a0a',
+    color: '#9d9896',
+    title:'Me'
 });
 var tab_settings = Titanium.UI.createTab({  
-    icon: 'tab_icons/icon_settings.png',
-    title:'Settings',
+    icon: 'tab_icons/icon_user.png',
+    title:'Me',
     window:win_settings
 });
 
-//
-//  add tabs
-//
+/******************************************************************
+ Put it all together and render
+ ******************************************************************/
 tabGroup.addTab(tab_browse);  
 tabGroup.addTab(tab_random);
 tabGroup.addTab(tab_favourites);
 tabGroup.addTab(tab_settings);
 
-
-
-
-// open tab group
+// Finally, open tab group
 tabGroup.open();

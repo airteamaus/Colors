@@ -8,7 +8,9 @@
     Copyright Rich Atkinson 2011 All Rights Reserved
 */
 
+// We don't pass the combo id in, rather we sniff it.
 var combo_id = Titanium.UI.currentWindow.combo;
+
 var db = Titanium.Database.install('./combos.db', 'colors');
 
 Titanium.API.info('Show combo '+ combo_id);
