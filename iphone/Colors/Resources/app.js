@@ -135,18 +135,25 @@ table_browse.addEventListener('click', function(e)
 	        //title: 'Options'
 	        image: 'nav_icons/icon_download.png'
 	    });
-	    // Event Listener for the options button, in the navbar of the child tab
+	    
+	    // Event Listener for the options button, in the navbar of the child window
 	    button.addEventListener('click',function(e)
         {
-            // modal options dialog
+            // Create the options dialog
     	    var options = Titanium.UI.createOptionDialog({
     	        title: 'Palette Options',
                 options: ['Download', 'Add to Favourites', 'Cancel'],
                 cancel: 2
     	    });
+    	    
+    	    // What to do when a button is clicked.
+    	    options.addEventListener('click', function(e){
+    	        Ti.API.info('click from '+ e.index);
+    	    });
     	    options.show();
         });
         
+        // Open the palette window
 		var win = Titanium.UI.createWindow({
 		    barColor: '#0a0a0a',
 			url: e.rowData.path,
@@ -154,9 +161,10 @@ table_browse.addEventListener('click', function(e)
 			rightNavButton: button
 		});
 
+        // Set a variable that we will access when we get there
 		var combo = e.rowData.id;
-		//Titanium.API.info('Have we got a reference: ' + combo);
 		win.combo = combo;
+		
 		tab_browse.open(win);
 	}
 });
